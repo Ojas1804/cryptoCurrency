@@ -2,8 +2,9 @@
 A simple bitcoin-like cryptocurrency implementation
 
 ### Work Done:
-<p> The implementation of transaction has been completed. </p>
+- The implementation of transaction has been completed.
+- Added block and miner as well
 
 ### Work to be done:
-- Create block of transaction.
 - Create Blockchain
+- Testing
