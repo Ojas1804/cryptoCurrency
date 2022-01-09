@@ -3,7 +3,6 @@ package cryptoCurrency;
 // Main will send an input, sender, recipient, value
 import java.security.PrivateKey;
 import java.security.PublicKey;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -26,6 +25,12 @@ public class Transaction
 		this.sender = sender;
 		this.recipient = recipient;
 		this.inputs = inputs;
+	}
+	
+	
+	public String getTxnHash()
+	{
+		return this.txnHash;
 	}
 	
 	
@@ -106,8 +111,7 @@ public class Transaction
 	
 	public void generateSignature(PrivateKey privateKey) 
 	{
-		LocalDateTime dateTime = LocalDateTime.now();
-		this.txnTime = dateTime.toString();
+		this.txnTime = Util.getTime();
 		String data = Util.toString(this.sender) + Util.toString(this.recipient) + Float.toString(this.txnValue) + this.txnTime;
 		byte[] temp = null;
 		try 

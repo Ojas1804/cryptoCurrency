@@ -5,6 +5,8 @@ import java.security.MessageDigest;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.Signature;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Base64;
 
 public class Util 
@@ -79,5 +81,34 @@ public class Util
 		{
 			throw new RuntimeException(e);
 		}
+	}
+	
+	
+	public static String getTime()
+	{
+		LocalDateTime dateTime = LocalDateTime.now();
+		String txnTime = dateTime.toString();
+		return txnTime;
+	}
+	
+	
+	public static String calculateMerkleRoot(ArrayList<Transaction> transactions)
+	{
+		String root = null;
+		ArrayList<String> txnHash = new ArrayList<>();
+		for(Transaction t : transactions)
+		{
+			txnHash.add(t.getTxnHash());
+		}
+		
+		while(txnHash.size() > 1)
+		{
+			txnHash.add(applySHA256(txnHash.get(0) + txnHash.get(1)));
+			txnHash.remove(0);
+			txnHash.remove(1);
+		}
+		
+		root = txnHash.get(0);
+		return root;
 	}
 }
