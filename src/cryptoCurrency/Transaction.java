@@ -9,7 +9,7 @@ import java.util.Set;
 
 public class Transaction 
 {
-	private String txnHash;
+	public String txnHash;
 	private ArrayList<Input> inputs;
 	private ArrayList<Output> outputs;
 	private String txnTime;
@@ -167,6 +167,19 @@ public class Transaction
 			UTXO u = i.getUtxo();
 			UTXOPool.removeUtxo(u);
 		}
+	}
+	
+	
+	
+	public ArrayList<Output> getOutputs()
+	{
+		return this.outputs;
+	}
+	
+	
+	public byte[] getSignature()
+	{
+		return this.signature;
 	}
 }
 

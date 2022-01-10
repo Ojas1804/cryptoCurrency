@@ -12,7 +12,7 @@ public class Block
 	private String merkleRoot;
 	
 	
-	public Block(String prevHash, long nonce)
+	public Block(String prevHash)
 	{
 		this.prevHash = prevHash;
 		this.dateTime = Util.getTime();
@@ -51,16 +51,11 @@ public class Block
 	}
 
 
-//	public ArrayList<Transaction> getTransactions()
-//	{
-//		return transactions;
-//	}
-//
-//
-//	public void setTransactions(ArrayList<Transaction> transactions)
-//	{
-//		this.transactions = transactions;
-//	}
+
+	public void setTransactions(ArrayList<Transaction> transactions)
+	{
+		this.transactions = transactions;
+	}
 
 
 	public String getDateTime()

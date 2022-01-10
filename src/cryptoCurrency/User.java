@@ -22,7 +22,15 @@ public class User
 	public User()
 	{
 		generateKeyPair();
-		password();
+		setPassword();
+		this.balance = 0;
+	}
+	
+	
+	public User(String pswd)
+	{
+		generateKeyPair();
+		this.password = null;
 		this.balance = 0;
 	}
 	
@@ -51,7 +59,7 @@ public class User
 	
 	
 	// to access private key
-	public void password()
+	public void setPassword()
 	{
 		Scanner in = new Scanner(System.in);
 		System.out.println("Enter a new password : ");
@@ -68,7 +76,7 @@ public class User
 		else
 		{
 			System.out.println("Password doesn't match. Try Again!!");
-			password();
+			setPassword();
 		}
 		in.close();
 	}
@@ -110,18 +118,14 @@ public class User
 	}
 	
 	
-//	private float calculateBalance(ArrayList<UTXO> myUTXOs)
-//	{
-//		float balance = 0;
-//		for(UTXO u : myUTXOs)
-//		{
-//			balance += u.getValue();
-//		}
-//		return balance;
-//	}
+	
+	public float getBalance()
+	{
+		return this.balance;
+	}
 	
 	
-	public ArrayList<Input> newPayment(float value, PublicKey recipient)
+	public Transaction newPayment(float value, PublicKey recipient)
 	{
 		float temp = 0;
 		ArrayList<Input> inputs = new ArrayList<>();
@@ -146,7 +150,7 @@ public class User
 		
 		Transaction newTransaction = new Transaction(inputs, publicKey, recipient, value);
 		newTransaction.generateSignature(privateKey);
-		return inputs;
+		return newTransaction;
 	} // still have to remove the UTXOs from myUTXOs
 	
 	
