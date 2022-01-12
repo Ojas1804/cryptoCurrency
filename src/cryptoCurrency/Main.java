@@ -12,11 +12,15 @@ public class Main
 		User u = new User();
 		newUserInstructions(u);
 		
-		BlockChain.genesisBlock(u);
+		System.out.println("Registering new Miner...");
+		Miner m1 = new Miner();
+		
+		BlockChain.genesisBlock(u, m1);
 		Scanner input = new Scanner(System.in);
 		
 		ArrayList<User> users = new ArrayList<>();
 		users.add(u);
+		users.add(m1);
 		
 		boolean end = false;
 		while(!end)
@@ -45,11 +49,11 @@ public class Main
 				
 				case 2:
 				{
-					System.out.print("Enter your public key : ");
+					System.out.print("Enter your public key : "); // sender
 					String key = input.nextLine();
 					User temp1 = null;
 					boolean found = false;
-					for(User user : users)
+					for(User user : users) // checking if entered public key exists or not
 					{
 						PublicKey pbKey = user.getPublicKey();
 						String pb = Util.toString(pbKey);
@@ -66,13 +70,14 @@ public class Main
 						break;
 					}
 					
-					System.out.println("Enter transaction value : ");
+					System.out.println("Enter transaction value : "); // amount being sent
 					String strValue = input.nextLine();
 					float value = Float.parseFloat(strValue);
 					
-					System.out.print("Enter the recipient's public key : ");
+					System.out.print("Enter the recipient's public key : "); // recipient
 					String strRecipient = input.nextLine();
 					
+					// checking if recipient exists or not
 					found = false;
 					PublicKey recipient = null;
 					User userRec = null;
@@ -94,22 +99,26 @@ public class Main
 						break;
 					}
 					
+					// password to use private key
 					System.out.print("Enter password : ");
 					String pswd = input.nextLine();
 					
 					if(temp1.verifyPassword(pswd))
 					{
-						Transaction t = temp1.newPayment(value, recipient);
-						boolean success = t.processTransaction();
+						Transaction t = temp1.newPayment(value, recipient); // new transaction created
+						boolean success = t.processTransaction(); // transaction processed
 						if(!success) break;
 						ArrayList<Transaction> tList = new ArrayList<>();
 						tList.add(t);
-						Block b = new Block(BlockChain.getPrevBlockHash());
-						Miner.mineBlock(BlockChain.getDifficulty(), b);
+						Block b = new Block(BlockChain.getPrevBlockHash()); // new block create
+						b.setTransactions(tList);
+						
+						success = m1.mineBlock(BlockChain.getDifficulty(), b); // block sent to the miner
 						
 						if(BlockChain.addBlock(b)) System.out.println("Block added to the blockchain...");
 						else System.out.println("Error occoured while adding the block");
 						
+						// adding UTXOs to recipient's wallet
 						userRec.receiveCoin(t.getOutputs(), t.getSignature());
 					}
 					newLine();

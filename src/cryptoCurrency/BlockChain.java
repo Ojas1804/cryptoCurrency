@@ -5,10 +5,12 @@ import java.util.ArrayList;
 public class BlockChain
 {
 	private static ArrayList<Block> blockchain;
-	private static int difficulty = 2;
+	private static final int difficulty = 2;
+	public static final float coinBaseValue = 25;
 	
 	
-	public static void genesisBlock(User recipient)
+	// Adding the first block of the blockchain
+	public static void genesisBlock(User recipient, Miner m1)
 	{
 		User temp = new User("temp");
 		Transaction genesisTransaction = new Transaction(null, temp.getPublicKey(), recipient.getPublicKey(), 100);
@@ -21,7 +23,7 @@ public class BlockChain
 		ArrayList<Transaction> t = new ArrayList<>();
 		t.add(genesisTransaction);
 		genesis.setTransactions(t);
-		Miner.mineBlock(getDifficulty(), genesis);
+		m1.mineBlock(getDifficulty(), genesis);
 		blockchain.add(genesis);
 		
 		System.out.println("First block added...");
@@ -35,15 +37,28 @@ public class BlockChain
 	}
 
 
+	// difficulty of problem that miner has to solve to get add new 
+	// block to the blockchain.
 	public static int getDifficulty()
 	{
 		return difficulty;
 	}
 	
 	
+	// adding new block in the blockchain
 	public static boolean addBlock(Block b)
 	{
 		blockchain.add(b);
 		return true;
+	}
+	
+	
+	// generate coinbase transaction: reward transaction given to miner
+	public static Transaction generateCoinbase(Miner m1)
+	{
+		Transaction coinbase = null;
+		coinbase = new Transaction(null, null, m1.getPublicKey(), BlockChain.coinBaseValue);
+		coinbase.processTransaction();
+		return coinbase;
 	}
 }

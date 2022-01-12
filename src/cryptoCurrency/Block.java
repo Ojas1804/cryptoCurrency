@@ -16,7 +16,12 @@ public class Block
 	{
 		this.prevHash = prevHash;
 		this.dateTime = Util.getTime();
-		this.merkleRoot = Util.calculateMerkleRoot(transactions);
+	}
+	
+	
+	public void setHash(String hash)
+	{
+		this.hash = hash;
 	}
 	
 	
@@ -85,5 +90,11 @@ public class Block
 	public String getHash()
 	{
 		return this.hash;
+	}
+	
+	
+	public ArrayList<Transaction> getTransactions()
+	{
+		return this.transactions;
 	}
 }
