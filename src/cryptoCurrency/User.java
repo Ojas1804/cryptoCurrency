@@ -5,6 +5,7 @@ import java.security.KeyPairGenerator;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.SecureRandom;
+import java.security.Security;
 import java.security.spec.ECGenParameterSpec;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -30,7 +31,7 @@ public class User
 	public User(String pswd)
 	{
 		generateKeyPair();
-		this.password = null;
+		this.password = pswd;
 		this.balance = 0;
 	}
 	
@@ -39,6 +40,7 @@ public class User
 	{
 		try 
 		{
+			Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
 			KeyPairGenerator keyGen = KeyPairGenerator.getInstance("ECDSA","BC");
 			SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
 			ECGenParameterSpec ecSpec = new ECGenParameterSpec("prime192v1"); // using ECC algorithm to
