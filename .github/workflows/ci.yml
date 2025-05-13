@@ -16,30 +16,46 @@ jobs:
   validate-branch:
     name: Validate Branch Policy
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request'
     steps:
-      - name: Check source/target branch rules
+      - name: Validate branch logic
         run: |
-          echo "Source: ${{ github.head_ref }}"
-          echo "Target: ${{ github.base_ref }}"
+          echo "Event: ${{ github.event_name }}"
+          echo "Ref: ${{ github.ref }}"
+          
+          if [[ "${{ github.event_name }}" == "push" ]]; then
+            BRANCH="${GITHUB_REF#refs/heads/}"
 
-          TARGET=${{ github.base_ref }}
-          SOURCE=${{ github.head_ref }}
+            echo "🧪 Validating branch name: $BRANCH"
 
-          if [[ "$TARGET" == "main" && "$SOURCE" != release/* ]]; then
-            echo "❌ Only release branches can be merged into main"
-            exit 1
+            if [[ "$BRANCH" != "main" && "$BRANCH" != feature/* && "$BRANCH" != release/* ]]; then
+              echo "❌ Invalid branch name. Must start with 'main', 'feature/', or 'release/'."
+              exit 1
+            fi
+
+          elif [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            SOURCE="${{ github.head_ref }}"
+            TARGET="${{ github.base_ref }}"
+
+            echo "🧪 Validating PR from '$SOURCE' to '$TARGET'"
+
+            if [[ "$TARGET" == "main" && "$SOURCE" != release/* ]]; then
+              echo "❌ Only release branches can be merged into main"
+              exit 1
+            fi
+
+            if [[ "$TARGET" == release/* && "$SOURCE" != feature/* ]]; then
+              echo "❌ Only feature branches can be merged into release"
+              exit 1
+            fi
+
+            if [[ "$TARGET" == feature/* && "$SOURCE" != feature/* ]]; then
+              echo "❌ Only feature branches can be merged into other feature branches"
+              exit 1
+            fi
+          else
+            echo "ℹ️ Unknown event type: ${{ github.event_name }}"
           fi
 
-          if [[ "$TARGET" == release/* && "$SOURCE" != feature/* ]]; then
-            echo "❌ Only feature branches can be merged into release"
-            exit 1
-          fi
-
-          if [[ "$TARGET" == feature/* && "$SOURCE" != feature/* ]]; then
-            echo "❌ Only feature branches can be merged into other feature branches"
-            exit 1
-          fi
 
   build:
     name: Build Project
