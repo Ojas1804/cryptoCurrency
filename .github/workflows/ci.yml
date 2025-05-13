@@ -92,7 +92,4 @@ jobs:
 
       - name: Run tests if present
         run: |
-          if ls src/test/java | grep -q .; then
-            mvn test
-          else
-            echo "✅ No unit tests found. Skipping test job."
+          mvn test
