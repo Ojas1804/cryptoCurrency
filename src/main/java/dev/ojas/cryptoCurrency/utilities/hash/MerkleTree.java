@@ -4,7 +4,9 @@ import lombok.Getter;
 
 import java.security.MessageDigest;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Function;
 
 @Getter
@@ -12,11 +14,11 @@ public class MerkleTree {
 
     // Getter for the Merkle tree root
     private final String root;
-    private final Function<String, String> hash = MerkleTree::sha256Hash;
+    private final Function<String, String> hash = MerkleTree::pqcHash;
 
     // Constructor that takes the list of messages and creates a Merkle tree.
-    public MerkleTree(List<String> messages) {
-        List<String> leaves = new ArrayList<>();
+    public MerkleTree(Set<String> messages) {
+        Set<String> leaves = new HashSet<>();
         for (String message : messages) {
             leaves.add(hash.apply(message));  // Hash each message to create leaf nodes
         }
@@ -24,17 +26,19 @@ public class MerkleTree {
     }
 
     // Method to build the Merkle tree and return the root hash
-    private String buildMerkleTree(List<String> nodes) {
-        while (nodes.size() > 1) {
+    private String buildMerkleTree(Set<String> nodes) {
+        List<String> nodesList = new ArrayList<>(nodes);
+        while (nodesList.size() > 1) {
             List<String> newLevel = new ArrayList<>();
-            for (int i = 0; i < nodes.size(); i += 2) {
+            for (int i = 0; i < nodesList.size(); i += 2) {
                 // Pair up adjacent nodes and hash them together to form the next level
-                if (i + 1 < nodes.size()) newLevel.add(hash.apply(nodes.get(i) + nodes.get(i + 1)));  // Concatenate and hash
-                else newLevel.add(nodes.get(i));  // For odd number of nodes, carry the last one forward
+                if (i + 1 < nodesList.size()) newLevel.add(hash.apply(nodesList.get(i) +
+                        nodesList.get(i + 1)));  // Concatenate and hash
+                else newLevel.add(nodesList.get(i));  // For odd number of nodes, carry the last one forward
             }
-            nodes = newLevel;  // Move up to the next level
+            nodesList = newLevel;  // Move up to the next level
         }
-        return nodes.get(0);  // The remaining node is the Merkle root
+        return nodesList.get(0);  // The remaining node is the Merkle root
     }
 
     // A simple hash function using SHA-256 (you'd replace this with a PQC hash in production)
@@ -59,7 +63,7 @@ public class MerkleTree {
         // Simple emulation of a PQC hash (e.g., from a post-quantum scheme like SPHINCS+ or Keccak)
         try {
             // This would be replaced by a real PQC hashing algorithm
-            MessageDigest digest = MessageDigest.getInstance("SHA-3-256");  // Keccak (SHA-3) is a candidate.
+            MessageDigest digest = MessageDigest.getInstance("SHA3-256");  // Keccak (SHA-3) is a candidate.
             byte[] hashBytes = digest.digest(input.getBytes());
             StringBuilder hexString = new StringBuilder();
             for (byte b : hashBytes) {
@@ -73,7 +77,11 @@ public class MerkleTree {
 
     // Main method for testing
     public static void main(String[] args) {
-        List<String> messages = List.of("Message 1", "Message 2", "Message 3", "Message 4");
+        Set<String> messages = new HashSet<>();
+        messages.add("Message 1");
+        messages.add("Message 2");
+        messages.add("Message 3");
+        messages.add("Message 4");
 
         MerkleTree tree = new MerkleTree(messages);
         System.out.println("Merkle Root: " + tree.getRoot());
