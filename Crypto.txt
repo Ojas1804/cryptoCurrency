@@ -1,0 +1,49 @@
+Crypto:
+
+USER:
+- user_id
+- usr_name
+- time of creation
+- public key
+- private key
+
+LEDGER: (Set of multiple txns)
+- ledger_id
+- set<txn_ids>
+(DB not needed)
+
+TXN:
+- txn_id
+- payer_id
+- reciever_id
+- txn_amount
+- timestamp
+- payer_signature
+
+WALLET:
+- usr_id
+- amount
+
+BLOCK:
+- block_id (block hash)
+- prev_hash
+- nonce
+= timestamp
+- block_hash
+
+BLOCKCHAIN:
+queue of ledger_id
+
+UTXO:
+- utxo_id
+- utxo_timestamp
+- utxo_value
+
+===============================
+Functions:
+keyGeneration: generate public and private key for each usr
+signTxn: Sign the txn by payer
+verifyTxn: verify If txn is valid or true by the receiver keys
+mine:
+calculateBlockHash: Use merkle tree (calculate hash of each txn in block and pair the txn hashes two consecutive at a time until you have one hash left)
+
