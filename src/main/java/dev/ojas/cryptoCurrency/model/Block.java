@@ -16,8 +16,7 @@ public class Block {
     @Column(name = "BLOCK_HASH", columnDefinition = "BINARY(32)")
     private byte[] blockHash;
 
-    @Column(name = "BLOCK_NUMBER", unique = true)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "BLOCK_NUMBER", unique = true, nullable = false)
     private Integer blockNumber;
 
     @Column(name = "PREVIOUS_HASH", columnDefinition = "BINARY(32)")
