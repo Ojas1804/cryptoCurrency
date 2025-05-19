@@ -2,9 +2,10 @@ package dev.ojas.cryptoCurrency.utilities.keys;
 
 import java.security.*;
 import java.util.Base64;
-import org.bouncycastle.pqc.jcajce.provider.BouncyCastlePQCProvider;
-import org.bouncycastle.pqc.jcajce.spec.DilithiumParameterSpec;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class MessageSignVerify {
     public static String signMessage(String message, PrivateKey privateKey) throws Exception {
         Signature signature = Signature.getInstance("Dilithium", "BCPQC");

@@ -11,5 +11,5 @@ public interface BlockTransactionRepository extends JpaRepository<BlockTransacti
     // Optional<BlockTransaction> findById(BlockTransactionId id); ← already exists
 
     // Find all transactions for a specific block
-    List<BlockTransaction> findById_BlockId(byte[] blockId);
+    List<BlockTransaction> findById_BlockId(String blockId);
 }

@@ -1,6 +1,7 @@
 package dev.ojas.cryptoCurrency.utilities.hash;
 
 import lombok.Getter;
+import org.springframework.stereotype.Component;
 
 import java.security.MessageDigest;
 import java.util.ArrayList;
@@ -10,24 +11,25 @@ import java.util.Set;
 import java.util.function.Function;
 
 @Getter
+@Component
 public class MerkleTree {
 
     // Getter for the Merkle tree root
-    private final String root;
+    private final Set<String> leaves;
     private final Function<String, String> hash = MerkleTree::pqcHash;
 
     // Constructor that takes the list of messages and creates a Merkle tree.
     public MerkleTree(Set<String> messages) {
-        Set<String> leaves = new HashSet<>();
+        this.leaves = new HashSet<>();
         for (String message : messages) {
             leaves.add(hash.apply(message));  // Hash each message to create leaf nodes
         }
-        root = buildMerkleTree(leaves);
+//        root = buildMerkleTree(leaves);
     }
 
     // Method to build the Merkle tree and return the root hash
-    private String buildMerkleTree(Set<String> nodes) {
-        List<String> nodesList = new ArrayList<>(nodes);
+    public String buildMerkleTree() {
+        List<String> nodesList = new ArrayList<>(this.leaves);
         while (nodesList.size() > 1) {
             List<String> newLevel = new ArrayList<>();
             for (int i = 0; i < nodesList.size(); i += 2) {
@@ -56,7 +58,7 @@ public class MerkleTree {
         }
     }
 
-    private static String pqcHash(String input) {
+    public static String pqcHash(String input) {
         // This is a dummy PQC hash function for illustration.
         // In practice, you would use an actual PQC algorithm like SPHINCS+ or Keccak.
 
@@ -84,6 +86,6 @@ public class MerkleTree {
         messages.add("Message 4");
 
         MerkleTree tree = new MerkleTree(messages);
-        System.out.println("Merkle Root: " + tree.getRoot());
+        System.out.println("Merkle Root: " + tree.buildMerkleTree());
     }
 }
