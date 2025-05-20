@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class MessageSignVerify {
-    public static String signMessage(String message, PrivateKey privateKey) throws Exception {
+    public String signMessage(String message, PrivateKey privateKey) throws Exception {
         Signature signature = Signature.getInstance("Dilithium", "BCPQC");
         signature.initSign(privateKey);
         signature.update(message.getBytes());
@@ -16,7 +16,7 @@ public class MessageSignVerify {
         return Base64.getEncoder().encodeToString(signatureBytes);  // Return as Base64 string
     }
 
-    public static boolean verifySignature(String message, String signatureBase64, PublicKey publicKey) throws Exception {
+    public boolean verifySignature(String message, String signatureBase64, PublicKey publicKey) throws Exception {
         Signature verifier = Signature.getInstance("Dilithium", "BCPQC");
         verifier.initVerify(publicKey);
         verifier.update(message.getBytes());

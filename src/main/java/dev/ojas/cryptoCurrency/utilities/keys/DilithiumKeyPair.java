@@ -4,8 +4,8 @@ import lombok.Getter;
 
 @Getter
 public class DilithiumKeyPair {
-    private String publicKeyBase64;
-    private String privateKeyBase64;
+    private final String publicKeyBase64;
+    private final String privateKeyBase64;
 
     public DilithiumKeyPair(String publicKey, String privateKey) {
         this.publicKeyBase64 = publicKey;

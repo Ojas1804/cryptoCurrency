@@ -25,6 +25,7 @@ public class User {
     @Getter
     @Column(name = "PUBLIC_KEY")
     private String publicKey;
+    @Getter
     @Column(name = "PRIVATE_KEY")
     private String privateKey;
 }
