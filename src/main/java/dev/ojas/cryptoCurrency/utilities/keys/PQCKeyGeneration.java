@@ -2,12 +2,14 @@ package dev.ojas.cryptoCurrency.utilities.keys;
 
 import org.bouncycastle.pqc.jcajce.spec.DilithiumParameterSpec;
 import org.bouncycastle.pqc.jcajce.provider.BouncyCastlePQCProvider;
+import org.springframework.stereotype.Component;
 
 import java.security.*;
 import java.util.Base64;
 
+@Component
 public class PQCKeyGeneration {
-    public static DilithiumKeyPair generateKeys() throws Exception {
+    public DilithiumKeyPair generateKeys() throws Exception {
         Security.addProvider(new BouncyCastlePQCProvider());
 
         KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("Dilithium", "BCPQC");

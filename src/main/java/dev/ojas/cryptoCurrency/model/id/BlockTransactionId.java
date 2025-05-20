@@ -1,15 +1,19 @@
 package dev.ojas.cryptoCurrency.model.id;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.Objects;
 
 @Embeddable
+@Getter
+@Setter
 public class BlockTransactionId implements Serializable {
 
     @Column(name = "BLOCK_ID", columnDefinition = "BINARY(32)")
-    private byte[] blockId;
+    private String blockId;
 
     @Column(name = "TRANSACTION_ID")
     private Integer transactionId;
@@ -18,25 +22,8 @@ public class BlockTransactionId implements Serializable {
     public BlockTransactionId() {}
 
     // Constructor
-    public BlockTransactionId(byte[] blockId, Integer transactionId) {
+    public BlockTransactionId(String blockId, Integer transactionId) {
         this.blockId = blockId;
-        this.transactionId = transactionId;
-    }
-
-    // Getters and Setters
-    public byte[] getBlockId() {
-        return blockId;
-    }
-
-    public void setBlockId(byte[] blockId) {
-        this.blockId = blockId;
-    }
-
-    public Integer getTransactionId() {
-        return transactionId;
-    }
-
-    public void setTransactionId(Integer transactionId) {
         this.transactionId = transactionId;
     }
 
@@ -44,14 +31,13 @@ public class BlockTransactionId implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof BlockTransactionId)) return false;
-        BlockTransactionId that = (BlockTransactionId) o;
-        return Arrays.equals(blockId, that.blockId) &&
+        if (!(o instanceof BlockTransactionId that)) return false;
+        return Objects.equals(blockId, that.blockId) &&
                 Objects.equals(transactionId, that.transactionId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(Arrays.hashCode(blockId), transactionId);
+        return Objects.hash(blockId, transactionId);
     }
 }

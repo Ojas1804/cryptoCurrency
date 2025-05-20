@@ -8,13 +8,14 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Setter
 @Table(name = "USER")
 public class User {
     @Getter
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "USER_ID")
-    private long userId;
+    private int userId;
     @Getter
     @Column(name = "USER_NAME")
     private String userName;

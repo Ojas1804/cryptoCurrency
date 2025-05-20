@@ -14,13 +14,13 @@ import java.time.LocalDateTime;
 public class Block {
     @Id
     @Column(name = "BLOCK_HASH", columnDefinition = "BINARY(32)")
-    private byte[] blockHash;
+    private String blockHash;
 
     @Column(name = "BLOCK_NUMBER", unique = true, nullable = false)
     private Integer blockNumber;
 
     @Column(name = "PREVIOUS_HASH", columnDefinition = "BINARY(32)")
-    private byte[] previousHash;
+    private String previousHash;
 
     @Column(name = "NONCE", nullable = false)
     private int nonce;

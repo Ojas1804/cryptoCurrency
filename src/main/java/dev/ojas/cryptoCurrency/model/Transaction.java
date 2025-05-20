@@ -18,10 +18,10 @@ public class Transaction {
     private long transactionId;
 
     @Column(name = "PAYER_ID")
-    private long payerId;
+    private int payerId;
 
     @Column(name = "RECEIVER_ID")
-    private long receiverId;
+    private int receiverId;
 
     @Column(name = "AMOUNT")
     private float transactionAmount;

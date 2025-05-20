@@ -2,11 +2,13 @@ package dev.ojas.cryptoCurrency.utilities.mine;
 
 import dev.ojas.cryptoCurrency.utilities.hash.MerkleTree;
 import lombok.Getter;
+import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
 import java.util.Set;
 
 @Getter
+//@Component
 public class BlockMinerServer {
     @Getter
     private static int nonce = 0;
@@ -29,7 +31,7 @@ public class BlockMinerServer {
             }
             modifiableMessagesSet.add(String.valueOf(nonce));
             MerkleTree merkleTree = new MerkleTree(modifiableMessagesSet);
-            hashedMessage = (String) merkleTree.getRoot();
+            hashedMessage = (String) merkleTree.buildMerkleTree();
             firstIteration = false;
         }
         return hashedMessage;
