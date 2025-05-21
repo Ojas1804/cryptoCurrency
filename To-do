@@ -1,0 +1,5 @@
+-> Move private and public keys to local storage.
+-> Create Mappers
+-> Different format of page response
+-> Move name of hash function to properties file
+-> Remove logic for adding values to wallet from TransactionService (addTransaction function) to when block is created in the chain

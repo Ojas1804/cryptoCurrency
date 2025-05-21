@@ -34,4 +34,10 @@ public class Transaction {
 
     @Column(name = "PAYER_SIGNATURE")
     private String payerSignature;
+
+    @Column(name = "PAYER_WALLET_ID")
+    private int payerWalletId;
+
+    @Column(name = "RECEIVER_WALLET_ID")
+    private int receiverWalletId;
 }
