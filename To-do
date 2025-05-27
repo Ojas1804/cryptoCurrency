@@ -3,3 +3,6 @@
 -> Different format of page response
 -> Move name of hash function to properties file
 -> Remove logic for adding values to wallet from TransactionService (addTransaction function) to when block is created in the chain
+
+// Add column PAYER_PUB_KEY for verifying if the payer signed the ledger. (in transaction)
+// check if utxo belongs to the correct wallet before spending. Also check the password.
